@@ -1,10 +1,10 @@
 % training chair rotator
-addpath(genpath('../../matlab'));
+addpath(genpath('../caffe-cedn/matlab'));
 % prepare oversampled input
 path_to_data  = 'data/';
 load([path_to_data 'chairs_data_64x64x3_crop.mat']);
 ids = ids(:); phi = phi(:); theta = theta(:);
-train_idx = ids<=500;
+train_idx = ids<=500; % TODO
 test_idx = ids>500;
 images_train = images(:,:,:,train_idx);
 [h,w,c,numtrains] = size(images_train);

@@ -1,4 +1,4 @@
-addpath(genpath('../../matlab'));
+addpath(genpath('../caffe-cedn/matlab'));
 % prepare oversampled input
 path_to_data  = 'data/';
 load([path_to_data 'chairs_data_64x64x3_crop.mat']);
@@ -28,12 +28,13 @@ for numsteps = [2,4,8,16],
     solver_file = sprintf('%s_solver.prototxt', model_specs);
     param = struct('base_lr', 0.000001, 'stepsize', 1000000, 'weight_decay', 0.001, 'solver_type', 3);
     make_solver_file(solver_file, model_file, param);
-    init_matcaffe(solver_file, use_gpu, 1);
+    init_matcaffe(solver_file, use_gpu, 0);
 
     % load pretrained layer weights
     model = caffe('get_weights');
     if numsteps == 2,
-        model_pretrained = load('models/base_model_iter0400.mat');
+        %model_pretrained = load('models/base_model_iter0400.mat');
+        model_pretrained = load('models/imagenet-vgg-verydeep-16.mat');
     else
         model_pretrained = load(sprintf('models/rnn_t%d_finetuning_model_iter0050.mat', numsteps/2));
     end

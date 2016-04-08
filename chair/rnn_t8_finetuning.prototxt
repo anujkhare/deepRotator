@@ -191,6 +191,7 @@ layers {
   name: "split_10"
   type: SPLIT
 }
+// TODO: prob ID LAYER
 layers {
   bottom: "ep_split_9"
   top: "ep_inner_product_10"
