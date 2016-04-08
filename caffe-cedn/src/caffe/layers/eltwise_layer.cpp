@@ -99,6 +99,21 @@ void EltwiseLayer<Dtype>::Forward_cpu(
       }
     }
     break;
+  case EltwiseParameter_EltwiseOp_LAYERMAX: {
+	int m=-10; //max value
+	max_index=-1; //index of the max value
+    caffe_set(count, Dtype(-FLT_MAX), top_data);
+	bottom_data_a = bottom[0]->cpu_data();
+	for (int idx = 0; idx<count;++idx) {
+		if (m<bottom_data_a[idx]){
+		m=bottom_data_a[idx];
+		max_index=idx;
+		}
+		top_data[idx]=0;
+	}
+	top_data[max_index]=1;
+	break;
+  }
   default:
     LOG(FATAL) << "Unknown elementwise operation.";
   }
@@ -151,6 +166,9 @@ void EltwiseLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
           bottom_diff[index] = gradient;
         }
         break;
+      case EltwiseParameter_EltwiseOp_LAYERMAX:
+		bottom_diff[max_index]=top_diff[max_index];
+		break;
       default:
         LOG(FATAL) << "Unknown elementwise operation.";
       }
