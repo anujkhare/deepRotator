@@ -100,11 +100,15 @@ void EltwiseLayer<Dtype>::Forward_cpu(
     }
     break;
   case EltwiseParameter_EltwiseOp_LAYERMAX: {
+  	printf("eltwiseLayermax 1\n");
 	int m=-10; //max value
 	max_index=-1; //index of the max value
     caffe_set(count, Dtype(-FLT_MAX), top_data);
+  	printf("eltwiseLayermax 2\n");
 	bottom_data_a = bottom[0]->cpu_data();
+  	printf("eltwiseLayermax 3\n");
 	for (int idx = 0; idx<count;++idx) {
+	  	printf("eltwiseLayermax 4\n");
 		if (m<bottom_data_a[idx]){
 		m=bottom_data_a[idx];
 		max_index=idx;
@@ -112,6 +116,7 @@ void EltwiseLayer<Dtype>::Forward_cpu(
 		top_data[idx]=0;
 	}
 	top_data[max_index]=1;
+  	printf("eltwiseLayermax 5\n");
 	break;
   }
   default:
